@@ -2,6 +2,7 @@ import pygame
 from config import *
 import random
 from music import Music
+import time
 
 
 class Paddle:
@@ -28,16 +29,22 @@ class Paddle:
 
 
 class Ball:
-    def __init__(self, screen):
+    def __init__(self, screen, ball_count):
         self.screen = screen
+        self.ball_count = ball_count
         self.rad = BALL_RAD
         self.position = BALL_POSITION
         self.speed = BALL_SPEED
-        self.__generate_init_y_position()
+        self.__set_y_pos()
+        self.__set_x_dir()
 
-    def __generate_init_y_position(self):
+    def __set_y_pos(self):
         random_y = random.randint(self.position[1] - 40, self.position[1] + 40)
         self.position = (self.position[0], random_y)
+
+    def __set_x_dir(self):
+        if self.ball_count % 2 == 0:
+            self.speed = (-self.speed[0], self.speed[1])
 
     def draw(self):
         pygame.draw.circle(self.screen, "white", self.position, self.rad)
@@ -59,3 +66,43 @@ class Ball:
             self.speed = (self.speed[0], -self.speed[1])
 
         self.position = new_position
+
+    def check_ball_position(self):
+        if self.position[0] <= 0 or self.position[0] >= SCREEN_W:
+            return True
+
+
+class Clock:
+    def __init__(self, screen):
+        self.screen = screen
+        self.timer = "00:00"
+        self.current_time = time.time()
+        self.seconds = 0
+        self.minutes = 0
+
+    def __update(self):
+        if time.time() - self.current_time >= 1:
+            self.current_time = time.time()
+            self.seconds += 1
+
+            if self.seconds == 60:
+                self.seconds = 0
+                self.minutes += 1
+
+            if self.seconds < 10 and self.minutes < 10:
+                self.timer = f"0{self.minutes}:0{self.seconds}"
+            elif self.seconds < 10:
+                self.timer = f"{self.minutes}:0{self.seconds}"
+            elif self.minutes < 10:
+                self.timer = f"0{self.minutes}:{self.seconds}"
+            else:
+                self.timer = f"{self.minutes}:{self.seconds}"
+
+    def show(self):
+        font = pygame.font.Font("freesansbold.ttf", CLOCK_TEXT_SIZE)
+        text = font.render(self.timer, True, CLOCK_TEXT_COLOR, MAIN_BG)
+        textRect = text.get_rect()
+        textRect.center = (SCREEN_W / 2, SCREEN_H - CLOCK_TEXT_SIZE)
+        self.screen.blit(text, textRect)
+
+        self.__update()

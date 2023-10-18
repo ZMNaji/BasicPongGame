@@ -16,8 +16,13 @@ PADDLE_SPEED = 5
 # Ball config
 BALL_POSITION = (SCREEN_W / 2, SCREEN_H / 2)
 BALL_RAD = 10
-BALL_SPEED = (-5, 5)
+BALL_SPEED = (5, 5)
 
 
 # Music Config
 MUSIC_VOLUME = 0.1
+
+
+# Clock Config
+CLOCK_TEXT_COLOR = (255, 255, 255)
+CLOCK_TEXT_SIZE = 20
