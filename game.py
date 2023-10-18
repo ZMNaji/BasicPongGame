@@ -1,6 +1,9 @@
 import pygame
+import sys
+import os
 from config import *
 from objects import Paddle, Ball
+from music import Music
 
 
 class Game:
@@ -18,6 +21,7 @@ class Game:
         self.screen = pygame.display.set_mode([SCREEN_W, SCREEN_H])
         self.clock = pygame.time.Clock()
         pygame.display.set_caption("Shooter Bubble")
+        main_menu_music = Music().play_main_song()
 
     def __listen_to_key_press(self):
         keys = pygame.key.get_pressed()
@@ -45,15 +49,19 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     is_running = False
+                    sys.exit()
 
             self.screen.fill(MAIN_BG)
+            self.__listen_to_key_press()
 
             self.left_paddle.draw()
             self.right_paddle.draw()
             self.ball.draw()
-            self.ball.move()
+            self.ball.move(
+                self.left_paddle.paddle_rect,
+                self.right_paddle.paddle_rect,
+            )
 
-            self.__listen_to_key_press()
             self.clock.tick(FPS)
 
             pygame.display.update()
