@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 from config import *
-from objects import Paddle, Ball, Clock
+from objects import Paddle, Ball, Clock, Score
 from music import Music
 
 
@@ -11,12 +11,14 @@ class Game:
         self.screen = None
         self.clock = None
         self.ball_count = 1
+        self.score = (0, 0)
         self.__init_game_settings()
 
         self.left_paddle = Paddle(self.screen, "left")
         self.right_paddle = Paddle(self.screen, "right")
         self.ball = Ball(self.screen, self.ball_count)
         self.timer = Clock(self.screen)
+        self.score_text = Score(self.screen)
 
     def __init_game_settings(self):
         pygame.init()
@@ -53,6 +55,8 @@ class Game:
             self.__listen_to_key_press()
 
             self.timer.show()
+            self.score_text.show()
+            self.score_text.update(self.score)
 
             self.left_paddle.draw()
             self.right_paddle.draw()
@@ -62,12 +66,14 @@ class Game:
                 self.right_paddle.paddle_rect,
             )
 
-            if self.ball.check_ball_position():
+            # Takes current score and return new_score
+            new_score = self.ball.update_score(self.score)
+            if new_score != self.score:
                 self.ball_count += 1
                 self.ball = Ball(self.screen, self.ball_count)
+                self.score = new_score
 
             self.clock.tick(FPS)
-
             pygame.display.update()
 
         pygame.quit

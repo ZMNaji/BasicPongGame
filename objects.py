@@ -67,9 +67,16 @@ class Ball:
 
         self.position = new_position
 
-    def check_ball_position(self):
-        if self.position[0] <= 0 or self.position[0] >= SCREEN_W:
-            return True
+    def update_score(self, score):
+        # if self.position[0] <= 0 or self.position[0] >= SCREEN_W:
+        # return True
+        if self.position[0] <= 0:
+            score = (score[0] + 1, score[1])
+
+        elif self.position[0] >= SCREEN_W:
+            score = (score[0], score[1] + 1)
+
+        return score
 
 
 class Clock:
@@ -106,3 +113,25 @@ class Clock:
         self.screen.blit(text, textRect)
 
         self.__update()
+
+
+class Score:
+    def __init__(self, screen):
+        self.screen = screen
+        self.right_score = 0
+        self.left_score = 0
+        self.score = "0 - 0"
+
+    def show(self):
+        font = pygame.font.Font("freesansbold.ttf", SCORE_TEXT_SIZE)
+        text = font.render(self.score, True, SCORE_TEXT_COLOR, MAIN_BG)
+        textRect = text.get_rect()
+        textRect.center = (SCREEN_W / 2, CLOCK_TEXT_SIZE)
+        self.screen.blit(text, textRect)
+
+    # side: left, right
+    # update score based on winner side
+    def update(self, score):
+        self.left_score = score[0]
+        self.right_score = score[1]
+        self.score = f"{self.left_score} - {self.right_score}"
