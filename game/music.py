@@ -1,7 +1,7 @@
 from pygame import mixer
-import os
-from config import *
 import threading
+import os
+from game.config import *
 
 
 class Music:

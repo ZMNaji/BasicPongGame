@@ -1,7 +1,6 @@
 # Game config
 SCREEN_W = 1280
 SCREEN_H = 720
-# MAIN_BG = (81, 64, 64)
 MAIN_BG = "black"
 FPS = 60
 
@@ -19,6 +18,10 @@ BALL_RAD = 10
 BALL_SPEED = (5, 5)
 
 
+# Ball config
+ABILITY_SPEED = 2
+
+
 # Music Config
 MUSIC_VOLUME = 0.1
 
@@ -26,6 +29,7 @@ MUSIC_VOLUME = 0.1
 # Clock Config
 CLOCK_TEXT_COLOR = (255, 255, 255)
 CLOCK_TEXT_SIZE = 20
+
 
 # Clock Config
 SCORE_TEXT_COLOR = (255, 255, 255)
